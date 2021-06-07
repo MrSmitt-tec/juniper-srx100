@@ -3,9 +3,13 @@
 | Structure | Состав |
 
 Config-juniper.txt - settings for juniper
+
 README.md - readme
+
 FAQ - en.md - instruction in english
+
 FAQ - ru.md - интсрукция на русском
+
 
 
 EN: The minimum config for Juniper-SRX100B from the series so that at least there is a connection (with a description of the parameters).  
