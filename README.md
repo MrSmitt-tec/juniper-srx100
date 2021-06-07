@@ -46,10 +46,14 @@ route 0.0.0.0/0 next-hop ***.***.***.***; - this line means that all packets fro
                                              
 Ports for connecting to the device from outside using the rdp protocol have been forwarded (this is not safe and it is not recommended to do this !!!)
 
+
 3 zones configured (zone names can be any)
 
+
 untrust_internet - internet zone
+
 trust_zone - local trust zone
+
 trust_zone1 - local trust zone 1
 
 
@@ -87,12 +91,12 @@ route 0.0.0.0/0 next-hop ***.***.***.***;  - данная строка озна�
                                              
 Проброшены порты для подключение к устройству из вне по протоколу rdp (это не безопасно и не рекомендуется это делать!!!)
 
+
 Настроены 3 зоны (названия зон могут быть любыми)
 
+
 untrust_internet - зона интернета
+
 trust_zone - локальная доверительная зона
+
 trust_zone1 - локальная доверительная зона 1
-
-
-
-
