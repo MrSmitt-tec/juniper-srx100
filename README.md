@@ -19,11 +19,17 @@ EN: The minimum config for Juniper-SRX100B from the series so that at least ther
 
 Symbols and abbreviations
 
+
 LAN - local area network
+
 vlan - virtual local area network
+
 ***.***.***.*** - this is the address of the provider
+
 /** - Subnet mask
+
 ***** - port
+
 
 
 ATTENTION!!! Before using it is recommended to remove all comments in the code, lines start with ##
@@ -65,11 +71,17 @@ RU: Минимальный конфиг для Juniper-SRX100B из серии �
 
 Обозначения и сокращения
 
+
 LAN - локальная сеть
+
 vlan - виртуальная локальная сеть
+
 ***.***.***.*** - так обозначается адрес провайдера
+
 /** - маска подсети 
+
 ***** - порт
+
 
 
 ВНИМАНИЕ!!! Пред использование рекомендуется убрать всё коментарии в коде, строки начинаются с ##
