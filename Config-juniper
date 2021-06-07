@@ -1,0 +1,457 @@
+
+## Last changed: 2021-05-04 12:06:14 UTC
+version 11.2R4.3;
+system {
+    host-name gw1;
+	
+    root-authentication {
+        encrypted-password "*********************************";
+		## encrypted password root | защифрованный пароль рута
+    }
+	
+    name-server {
+        192.168.10.3;
+		## DNS
+    }
+    login {
+        user NewUser {
+            uid 2001;
+            class super-user;
+            authentication {
+                encrypted-password "*********************************";
+				## encrypted password NewUser | защифрованный пароль Нового пользователя
+            }
+        }
+    }
+    services {
+        ssh {
+            root-login allow;
+			## permission to connect to the root via ssh   |  разрешение на подключение руту по ssh
+        }
+        web-management {
+            http {
+                interface [ fe-0/0/2.0 vlan.20 ];
+            }
+			## which vlan port will be used to access the web page | через какой порт влан будет доступ к web страницы
+        }
+        dhcp {
+		
+		## configuring the address pool in dhcp with the vlana and gateway specified | настройка пула адресов в dhcp с указанием vlana и шлюза
+            pool 192.168.30.0/24 {
+                address-range low 192.168.30.2 high 192.168.30.250;
+                router {
+                    192.168.30.1;
+                }
+                propagate-settings vlan.30;
+            }
+            pool 192.168.40.0/24 {
+                address-range low 192.168.40.2 high 192.168.40.22;
+                router {
+                    192.168.40.1;
+                }
+                propagate-settings vlan.40;
+            }
+            pool 192.168.50.0/24 {
+                address-range low 192.168.50.2 high 192.168.50.250;
+                router {
+                    192.168.50.1;
+                }
+                propagate-settings vlan.50;
+            }
+            pool 192.168.60.0/24 {
+                address-range low 192.168.60.2 high 192.168.60.250;
+                router {
+                    192.168.60.1;
+                }
+                propagate-settings vlan.60;
+            }
+            pool 192.168.70.0/24 {
+                address-range low 192.168.70.2 high 192.168.70.250;
+                router {
+                    192.168.70.1;
+                }
+                propagate-settings vlan.70;
+            }
+            pool 192.168.80.0/24 {
+                address-range low 192.168.80.2 high 192.168.80.250;
+                router {
+                    192.168.80.1;
+                }
+                propagate-settings vlan.80;
+            }
+            pool 192.168.90.0/24 {
+                address-range low 192.168.90.2 high 192.168.90.12;
+                router {
+                    192.168.90.1;
+                }
+                propagate-settings vlan.90;
+            }
+            pool 192.168.100.0/24 {
+                address-range low 192.168.100.2 high 192.168.100.250;
+                router {
+                    192.168.100.1;
+                }
+                propagate-settings vlan.100;
+            }
+            pool 192.168.101.0/24 {
+                address-range low 192.168.101.2 high 192.168.101.5;
+                router {
+                    192.168.101.1;
+                }
+                propagate-settings vlan.101;
+            }
+        }
+    }
+}
+interfaces {
+    fe-0/0/0 {
+        unit 0 {
+            family inet {
+                address 192.168.10.7/28;
+            }
+        }
+    }
+    fe-0/0/1 {
+        unit 0 {
+            family inet {
+                address ***.***.***.***/29; 
+				## ip-address provided by provaider  |  ип адресс предоставленный провайдером
+            }
+        }
+    }
+    fe-0/0/2 {
+        unit 0 {
+            family ethernet-switching {
+                port-mode trunk;
+                vlan {
+                    members [ v-10 v-20 v-30 v-40 v-50 v-60 v-70 v-80 v-90 v-100 v-101 ];
+                }
+				##  configuring a trunk port that looks at the local network  |  настройка транкового порта который смотрит в локальную сеть
+            }
+        }
+    }
+    vlan {
+	## assigning gateway addresses to a unit  |  присвоение unit адресов шлюза
+        unit 10 {
+            family inet {
+                address 192.168.10.1/24;
+            }
+        }
+        unit 20 {
+            family inet {
+                address 192.168.20.1/24;
+            }
+        }
+        unit 30 {
+            family inet {
+                address 192.168.30.1/24;
+            }
+        }
+        unit 40 {
+            family inet {
+                address 192.168.40.1/24;
+            }
+        }
+        unit 50 {
+            family inet {
+                address 192.168.50.1/24;
+            }
+        }
+        unit 60 {
+            family inet {
+                address 192.168.60.1/24;
+            }
+        }
+        unit 70 {
+            family inet {
+                address 192.168.70.1/24;
+            }
+        }
+        unit 80 {
+            family inet {
+                address 192.168.80.1/24;
+            }
+        }
+        unit 90 {
+            family inet {
+                address 192.168.90.1/24;
+            }
+        }
+        unit 100 {
+            family inet {
+                address 192.168.100.1/24;
+            }
+        }
+        unit 101 {
+            family inet {
+                address 192.168.101.1/24;
+            }
+        }
+        unit 102 {
+            family inet {
+                address 192.168.102.1/24;
+            }
+        }
+    }
+}
+routing-options {
+    static {
+        route 0.0.0.0/0 next-hop ***.***.***.***;
+        ## configuring the path, all from the internal addresses of the idet to the gateway of the provider |  настройка пути, всё с внутренних адресов идетт на шлюз провайдера
+    }
+}
+security {
+    address-book {
+        Local {
+            address vlanname1 192.168.10.5/32;
+            address vlanname2 192.168.20.0/24;
+            address vlanname3 192.168.30.0/24;
+			##***
+            ##address vlannameN 192.16.***.***/**;
+            
+			## adding addresses to the Local address book  |  добавление адресов в адресную книгу Local
+			
+            attach {
+                zone trust_zone;
+				## zone assignment  |   назначение зоны
+            }
+        }
+        global {
+            address rdp 192.168.10.3/32;
+			##the configuration is required for rdp port forwarding to connect from outside via rdp  |  настройка необходима для проброса rdp порта для пожключения из вне по rdp
+        }
+    }
+    nat {
+        source {
+		
+		
+		##setting up rules for getting access to the internet, access to a local network, access to another vlan | настрой правил для получения доступа к интернету, доступа в локальной сети, доступа в другую vlan
+            
+			rule-set trust_zone-to-untrust_internet {
+                from zone trust_zone;
+                to zone untrust_internet;
+                rule rule_zone-inet_vlan1 {
+                    match {
+                        source-address 192.168.10.0/24;
+                    }
+                    then {
+                        source-nat {
+                            interface;
+                        }
+                    }
+                }
+				##***
+                rule rule_zone-inet_vlanN {
+                    match {
+                        source-address 192.168.***.***/**;
+                    }
+                    then {
+                        source-nat {
+                            interface;
+                        }
+                    }
+                }
+            }
+            rule-set trust_zone-to-trust_zone2 {
+                from zone trust_zone;
+                to zone trust_zone2;
+                rule zone1_to_zone2 {
+                    match {
+                        source-address 192.168.0.0/16;
+                    }
+                    then {
+                        source-nat {
+                            interface;
+                        }
+                    }
+                }
+            }
+            
+        }
+        destination {
+            pool rdp {
+                address 192.168.10.3/32 port 3389;
+				##port forwarding for rdp connections from outside | проброс порта для rdp подключенияя из вне
+            }
+           
+            rule-set DNAT {
+			
+			## Creating a DNAT rule for connecting to the IP address of the provider | Создание правила DNAT для подключения по ип адреса провайдера
+                from zone untrust_internet;
+                rule DNAT_for_rdp {
+                    match {
+                        destination-address ***.***.***.***/**;
+                        destination-port *****;
+						## external port | внешний порт
+                    }
+                    then {
+                        destination-nat pool rdp;
+                    }
+                }
+            }
+        }
+    }
+    policies {
+	## the rule is for internet access to everything and everything, but you can configure it more subtly  | правило для доступа в интернет всего и вся, но можно настроить более тонко
+        from-zone trust_zone to-zone untrust_internet {
+            policy zone-to-internet {
+                match {
+                    source-address any;
+                    destination-address any;
+                    application any;
+                }
+                then {
+                    permit;
+                }
+            }
+        }
+        from-zone untrust_internet to-zone trust_zone {
+            policy Internet_to_local {
+                match {
+                    source-address any;
+                    destination-address any;
+                    application any;
+                }
+                then {
+                    permit;
+                }
+            }
+            policy rdp_access {
+                match {
+                    source-address any;
+                    destination-address rdp;
+                    application any;
+                }
+                then {
+                    permit;
+                }
+            }
+        }
+        from-zone trust_zone1 to-zone trust_zone1 {
+            policy Local-to-internet {
+                match {
+                    source-address any;
+                    destination-address any;
+                    application [ junos-http junos-https junos-ping junos-dns-tcp junos-dns-udp ];
+                }
+                then {
+                    permit;
+                }
+            }
+        }
+            policy vlanname1 {
+                match {
+                    source-address [ vlanname1 vlanname3 ];
+                    destination-address [ vlanname2 ];
+                    application any;
+                }
+                then {
+                    permit;
+                }
+            }
+        }
+        
+    zones {
+	
+	## Configuring and creating the zones themselves and adding the juniper and vlan interfaces to them | Настройка и создание самих зон и добавление в них интерфейсов юнипера и vlan
+        security-zone trust_zone {
+            host-inbound-traffic {
+                system-services {
+                    all;
+                }
+            }
+            interfaces {
+                vlan.10;
+                vlan.20;
+                vlan.30;
+                vlan.40;
+                vlan.50;
+                vlan.60;
+                vlan.70;
+                vlan.80;
+                vlan.90;
+                vlan.100;
+                vlan.101;
+                vlan.102;
+                fe-0/0/2.0;
+            }
+        }
+        security-zone untrust_internet {
+            host-inbound-traffic {
+                system-services {
+                    dns;
+                    http;
+                    https;
+                    ping;
+                }
+            }
+            interfaces {
+                fe-0/0/1.0;
+            }
+        }
+        security-zone trust_zone2 {
+            host-inbound-traffic {
+                system-services {
+                    dns;
+                    http;
+                    https;
+                    ping;
+                }
+            }
+            interfaces {
+                fe-0/0/0.0;
+            }
+        }
+    }
+}
+vlans {
+## Adding vlans and assigning them a vlan-id | Добавление vlan и присвоение им vlan-id
+    v-10 {
+        vlan-id 10;
+        l3-interface vlan.10;
+    }
+    v-100 {
+        vlan-id 100;
+        l3-interface vlan.100;
+    }
+    v-101 {
+        vlan-id 101;
+        l3-interface vlan.101;
+    }
+    v-102 {
+        vlan-id 102;
+        l3-interface vlan.102;
+    }
+    v-20 {
+        vlan-id 20;
+        l3-interface vlan.20;
+    }
+    v-30 {
+        vlan-id 30;
+        l3-interface vlan.30;
+    }
+    v-40 {
+        vlan-id 40;
+        l3-interface vlan.40;
+    }
+    v-50 {
+        vlan-id 50;
+        l3-interface vlan.50;
+    }
+    v-60 {
+        vlan-id 60;
+        l3-interface vlan.60;
+    }
+    v-70 {
+        vlan-id 70;
+        l3-interface vlan.70;
+    }
+    v-80 {
+        vlan-id 80;
+        l3-interface vlan.80;
+    }
+    v-90 {
+        vlan-id 90;
+        l3-interface vlan.90;
+    }
+}
